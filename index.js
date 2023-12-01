@@ -2,12 +2,16 @@ const express = require("express");
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const app = express();
-const port = 8080;
+const port = 3000;
 
-const exampleExample = require("./routes/example");
-
+const exampleExample = require("./routes/exampleExample");
+const authentication = require("./routes/authentication");
+const books = require("./routes/books");
 async function main() {
-  app.use("/api/example", exampleExample);
+  // app.use("/api/example", exampleExample);
+  app.use(express.json());
+  app.use("/api/books", books);
+  app.use("/api/authentication", authentication);
   app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
   });
