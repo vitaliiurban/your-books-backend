@@ -20,7 +20,7 @@ model books {
 
 model users {
   username String @db.VarChar(50)
-  email    String @id @db.VarChar(50)
-  id       String @db.VarChar(8)
+  email    String @unique(map: "users_pk") @db.VarChar(50)
+  id       String @id @db.VarChar(8)
   password String @db.VarChar(30)
 }
