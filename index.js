@@ -4,14 +4,20 @@ const prisma = new PrismaClient();
 const app = express();
 const port = 3000;
 
-const exampleExample = require("./routes/exampleExample");
 const authentication = require("./routes/authentication");
 const books = require("./routes/books");
+const book = require("./routes/book");
+const genres = require("./routes/genres");
+const reserves = require("./routes/reserves");
+
 async function main() {
-  // app.use("/api/example", exampleExample);
   app.use(express.json());
-  app.use("/api/books", books);
+  app.use(express.urlencoded({ limit: "100mb", extended: true }));
   app.use("/api/authentication", authentication);
+  app.use("/api/books", books);
+  app.use("/api/book", book);
+  app.use("/api/genres", genres);
+  app.use("/api/reserves", reserves);
   app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
   });

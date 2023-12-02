@@ -8,19 +8,40 @@ datasource db {
 }
 
 model books {
-  id        String  @id @db.Char(8)
-  title     String  @db.VarChar(50)
-  author    String  @db.VarChar(50)
-  year      Int     @db.Year
-  publisher String? @db.VarChar(120)
-  image     String? @db.VarChar(250)
-  quantity  Int
-  rating    Int
+  id          String     @id @db.VarChar(8)
+  title       String     @db.VarChar(50)
+  author      String     @db.VarChar(50)
+  year        Int        @db.Year
+  publisher   String?    @db.VarChar(120)
+  image       String?    @db.VarChar(250)
+  rating      Int
+  description String?    @db.VarChar(500)
+  genres      Int
+  in_stock    Int
+  reserved    Int
+  reserves    reserves[]
 }
 
 model users {
-  username String @db.VarChar(50)
-  email    String @unique(map: "users_pk") @db.VarChar(50)
-  id       String @id @db.VarChar(8)
-  password String @db.VarChar(30)
+  username String     @db.VarChar(50)
+  email    String     @unique(map: "users_pk") @db.VarChar(50)
+  id       String     @id @db.VarChar(8)
+  password String     @db.VarChar(30)
+  reserves reserves[]
+}
+
+model reserves {
+  id      Int    @id @default(autoincrement())
+  book_id String @db.VarChar(8)
+  user_id String @db.VarChar(8)
+  books   books  @relation(fields: [book_id], references: [id], onDelete: Cascade, map: "reserves_books_id_fk")
+  users   users  @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "reserves_users_id_fk")
+
+  @@index([book_id], map: "reserves_books_id_fk")
+  @@index([user_id], map: "reserves_users_id_fk")
+}
+
+model genres {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(50)
 }
