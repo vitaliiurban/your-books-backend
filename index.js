@@ -5,6 +5,7 @@ const app = express();
 const port = 3000;
 
 const authentication = require("./routes/authentication");
+const user = require("./routes/user");
 const books = require("./routes/books");
 const book = require("./routes/book");
 const genres = require("./routes/genres");
@@ -18,6 +19,7 @@ async function main() {
   app.use("/api/book", book);
   app.use("/api/genres", genres);
   app.use("/api/reserves", reserves);
+  app.use("/api/user", user);
   app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
   });
