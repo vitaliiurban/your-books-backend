@@ -15,7 +15,7 @@ model books {
   publisher   String?     @db.VarChar(120)
   image       String?     @db.VarChar(250)
   rating      Int
-  description String?     @db.VarChar(500)
+  description String?     @db.VarChar(2500)
   genres      Int
   in_stock    Int
   reserved    Int
