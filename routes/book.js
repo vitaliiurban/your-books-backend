@@ -53,5 +53,18 @@ router.put("/update-reserved", async (req, res) => {
     res.json(err);
   }
 });
+router.delete("/delete/:id", async (req, res) => {
+  try {
+    const deletedBook = await prisma.books.delete({
+      where: {
+        id: req.params.id,
+      },
+    });
+    res.json(deletedBook);
+  } catch (err) {
+    console.error(err);
+    res.json(err);
+  }
+});
 
 module.exports = router;
