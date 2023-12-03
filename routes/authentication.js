@@ -9,7 +9,7 @@ const secretKey = "OPQJWPODJsmi1ohj";
 
 router.post("/sign-up", async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, role } = req.body;
     const user = await prisma.users.findUnique({
       where: { email },
     });
@@ -23,6 +23,7 @@ router.post("/sign-up", async (req, res) => {
         username: username,
         email: email,
         password: password,
+        role: role,
       },
     });
     res.json(data);

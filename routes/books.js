@@ -16,11 +16,26 @@ router.get("/count", async (req, res) => {
 router.get("/", async (req, res) => {
   const page = parseInt(req.query.page);
   const limit = parseInt(req.query.limit);
+  const searchQuery = req.query.searchQuery;
   const skip = (page - 1) * limit;
+  console.log(searchQuery);
+  let baseFilter = {};
+  if (parseInt(searchQuery)) {
+    baseFilter = { genres: parseInt(searchQuery) };
+  } else if (searchQuery !== "undefined") {
+    baseFilter.OR = [
+      { title: { contains: searchQuery } },
+      { author: { contains: searchQuery } },
+      { publisher: { contains: searchQuery } },
+    ];
+  }
+
   const data = await prisma.books.findMany({
     skip: skip,
     take: limit,
+    where: baseFilter,
   });
+  console.log(baseFilter);
   res.json(data);
 });
 

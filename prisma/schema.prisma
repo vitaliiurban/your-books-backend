@@ -59,3 +59,14 @@ model genres {
   id   Int    @id @default(autoincrement())
   name String @db.VarChar(50)
 }
+
+model favorites {
+  id      Int    @id @default(autoincrement())
+  book_id String @db.VarChar(8)
+  user_id String @db.VarChar(8)
+  books   books  @relation(fields: [book_id], references: [id], onDelete: Cascade, map: "favorites_books_id_fk")
+  users   users  @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "favorites_users_id_fk")
+
+  @@index([book_id], map: "favorites_books_id_fk")
+  @@index([user_id], map: "favorites_users_id_fk")
+}
