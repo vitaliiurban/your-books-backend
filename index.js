@@ -10,6 +10,7 @@ const books = require("./routes/books");
 const book = require("./routes/book");
 const genres = require("./routes/genres");
 const reserves = require("./routes/reserves");
+const favorites = require("./routes/favorites");
 
 async function main() {
   app.use(express.json());
@@ -19,6 +20,7 @@ async function main() {
   app.use("/api/book", book);
   app.use("/api/genres", genres);
   app.use("/api/reserves", reserves);
+  app.use("/api/favorites", favorites);
   app.use("/api/user", user);
   app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);

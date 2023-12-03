@@ -5,7 +5,6 @@ const router = express.Router();
 
 router.get("/:id", async (req, res) => {
   const id = parseInt(req.params.id);
-  console.log(id);
   try {
     const data = await prisma.genres.findUnique({
       where: { id },

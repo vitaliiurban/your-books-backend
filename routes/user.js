@@ -41,7 +41,6 @@ router.put("/update/pass/:id", async (req, res) => {
 router.put("/update/:id", async (req, res) => {
   try {
     const { id, username, email } = req.body;
-    console.log(username, email);
     const updatedUser = await prisma.users.update({
       where: { id: id },
       data: {
