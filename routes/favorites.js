@@ -3,11 +3,11 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const router = express.Router();
 
-router.get("/check-reserve", async (req, res) => {
+router.get("/check-favorite", async (req, res) => {
   const book_id = req.query.book_id;
   const user_id = req.query.user_id;
   try {
-    const data = await prisma.reserves.findFirst({
+    const data = await prisma.favorites.findFirst({
       where: { book_id: book_id, user_id: user_id },
     });
 
@@ -22,7 +22,7 @@ router.post("/add", async (req, res) => {
   try {
     const book_id = req.body.book_id;
     const user_id = req.body.user_id;
-    const data = await prisma.reserves.create({
+    const data = await prisma.favorites.create({
       data: {
         book_id: book_id,
         user_id: user_id,
@@ -36,22 +36,9 @@ router.post("/add", async (req, res) => {
 });
 
 router.delete("/delete/:id", async (req, res) => {
-  const id = parseInt(req.params.id);
-  const book_id = req.query.book_id;
-  const user_id = req.query.user_id;
-  let whereClause = {};
-
-  if (id) {
-    whereClause = { id };
-  } else if (book_id && user_id) {
-    whereClause = { book_id, user_id };
-  } else {
-    return res.status(400).json({ error: "Invalid parameters" });
-  }
-
   try {
-    const deletedUser = await prisma.reserves.deleteMany({
-      where: whereClause,
+    const deletedUser = await prisma.favorites.delete({
+      where: { id: parseInt(req.params.id) },
     });
 
     res.json(deletedUser);
