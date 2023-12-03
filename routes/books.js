@@ -63,4 +63,50 @@ router.get("/reserves/:user_id", async (req, res) => {
   }
 });
 
+router.get("/reserves/:user_id", async (req, res) => {
+  const user_id = req.params.user_id;
+  try {
+    const reservedBooks = await prisma.reserves.findMany({
+      where: { user_id: user_id },
+    });
+    const bookIds = reservedBooks.map((reserve) => reserve.book_id);
+    const books = await prisma.books.findMany({
+      where: {
+        id: {
+          in: bookIds,
+        },
+      },
+    });
+
+    const data = res.json({ books });
+    return data;
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+router.get("/favorites/:user_id", async (req, res) => {
+  const user_id = req.params.user_id;
+  try {
+    const favoriteBooks = await prisma.favorites.findMany({
+      where: { user_id: user_id },
+    });
+    const bookIds = favoriteBooks.map((favorite) => favorite.book_id);
+    const books = await prisma.books.findMany({
+      where: {
+        id: {
+          in: bookIds,
+        },
+      },
+    });
+
+    const data = res.json({ books });
+    return data;
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 module.exports = router;

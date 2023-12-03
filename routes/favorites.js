@@ -36,12 +36,29 @@ router.post("/add", async (req, res) => {
 });
 
 router.delete("/delete/:id", async (req, res) => {
+  const id = parseInt(req.params.id);
+  const book_id = req.query.book_id;
+  const user_id = req.query.user_id;
+  let whereClause = {};
+
+  if (id) {
+    whereClause = { id };
+  } else if (book_id && user_id) {
+    whereClause = { book_id, user_id };
+  } else {
+    return res.status(400).json({ error: "Invalid parameters" });
+  }
+
   try {
-    const deletedUser = await prisma.favorites.delete({
-      where: { id: parseInt(req.params.id) },
+    const data = await prisma.favorites.findMany({
+      where: whereClause,
     });
 
-    res.json(deletedUser);
+    const deleteRecords = await prisma.favorites.deleteMany({
+      where: whereClause,
+    });
+
+    res.json({ data });
   } catch (error) {
     console.error("Error updating user:", error);
     res.status(500).json({ error: "Internal Server Error" });
