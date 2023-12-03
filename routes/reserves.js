@@ -50,11 +50,15 @@ router.delete("/delete/:id", async (req, res) => {
   }
 
   try {
-    const deletedUser = await prisma.reserves.deleteMany({
+    const data = await prisma.reserves.findMany({
       where: whereClause,
     });
 
-    res.json(deletedUser);
+    const deleteRecords = await prisma.reserves.deleteMany({
+      where: whereClause,
+    });
+
+    res.json({ data });
   } catch (error) {
     console.error("Error updating user:", error);
     res.status(500).json({ error: "Internal Server Error" });
