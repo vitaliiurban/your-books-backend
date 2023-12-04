@@ -22,6 +22,8 @@ router.post("/add", async (req, res) => {
   try {
     const book_id = req.body.book_id;
     const user_id = req.body.user_id;
+    console.log(book_id);
+    console.log(user_id);
     const data = await prisma.favorites.create({
       data: {
         book_id: book_id,
