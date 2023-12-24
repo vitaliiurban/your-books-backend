@@ -66,5 +66,26 @@ router.delete("/delete/:id", async (req, res) => {
     res.json(err);
   }
 });
+router.put("/update/:id", async (req, res) => {
+  try {
+    const deletedBook = await prisma.books.update({
+      where: {
+        id: req.params.id,
+      },
+      data: {
+        ...req.body,
+        year: parseInt(req.body.year),
+        in_stock: parseInt(req.body.in_stock),
+        reserved: parseInt(req.body.reserved),
+        genres: parseInt(req.body.genres),
+        rating: parseInt(req.body.rating),
+      },
+    });
+    res.json(deletedBook);
+  } catch (err) {
+    console.error(err);
+    res.json(err);
+  }
+});
 
 module.exports = router;
